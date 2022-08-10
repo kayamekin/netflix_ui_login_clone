@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:netflix_ui_design/pages/netflix/loginpage.dart';
+import 'package:flutter_application_3/pages/netflix/loginpage.dart';
 
 class NetflixHomePage extends StatefulWidget {
   const NetflixHomePage({Key? key}) : super(key: key);

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:netflix_ui_design/pages/netflix/homepage.dart';
+import 'package:flutter_application_3/pages/netflix/homepage.dart';
 
 void main() {
   runApp(const MyApp());

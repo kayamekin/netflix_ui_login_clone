@@ -1,4 +1,4 @@
-package com.example.netflix_ui_design
+package com.example.flutter_application_3
 
 import io.flutter.embedding.android.FlutterActivity
 
