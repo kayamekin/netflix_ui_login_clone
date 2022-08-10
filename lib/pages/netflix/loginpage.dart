@@ -22,7 +22,7 @@ class _LoginPageNetflixState extends State<LoginPageNetflix> {
       videoPlayerController: videoPlayerController,
       aspectRatio: 12 / 24,
       autoPlay: true,
-      looping: false,
+      looping: true,
       autoInitialize: true,
       showControls: false,
       allowMuting: false,
