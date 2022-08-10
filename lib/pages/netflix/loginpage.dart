@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_3/pages/netflix/netflixmainpage.dart';
 import 'package:video_player/video_player.dart';
 import 'package:chewie/chewie.dart';
 
@@ -22,7 +23,7 @@ class _LoginPageNetflixState extends State<LoginPageNetflix> {
       videoPlayerController: videoPlayerController,
       aspectRatio: 12 / 24,
       autoPlay: true,
-      looping: true,
+      looping: false,
       autoInitialize: true,
       showControls: false,
       allowMuting: false,
@@ -42,148 +43,160 @@ class _LoginPageNetflixState extends State<LoginPageNetflix> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black54,
-      body: SingleChildScrollView(
-        child: SafeArea(
-          child: Stack(
-            children: [
-              Container(
-                height: size.height,
-                child: Chewie(
-                  controller: chewieController!,
+      body: SafeArea(
+        child: Stack(
+          children: [
+            SizedBox(
+              height: size.height,
+              child: Chewie(
+                controller: chewieController!,
+              ),
+            ),
+            Container(
+              color: Colors.black54,
+              width: double.infinity,
+              height: size.height,
+            ),
+            Positioned(
+              top: 200,
+              width: MediaQuery.of(context).size.width,
+              child: Material(
+                color: Colors.transparent,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Center(
+                      child: Image.asset(
+                        'assets/images/netflix_logo.png',
+                        width: size.height / 3,
+                      ),
+                    ),
+                    InputDesigns(),
+                  ],
                 ),
               ),
-              Container(
-                color: Colors.black54,
-                width: double.infinity,
-                height: size.height,
-              ),
-              Positioned(
-                top: 200,
-                width: MediaQuery.of(context).size.width,
-                child: Material(
-                  color: Colors.transparent,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Center(
-                        child: Container(
-                          child: Image.asset(
-                            'assets/image/netflix_logo.png',
-                            width: size.height / 3,
+            ),
+            Positioned(
+              top: 600,
+              width: MediaQuery.of(context).size.width,
+              child: Material(
+                color: Colors.white.withOpacity(0.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      focusColor: Colors.white,
+                      splashColor: Colors.white,
+                      child: Ink(
+                        width: MediaQuery.of(context).size.width / 2,
+                        height: 50,
+                        decoration: const BoxDecoration(
+                            gradient: LinearGradient(
+                          colors: [
+                            Colors.black,
+                            Colors.red,
+                          ],
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
+                        )),
+                        child: const Center(
+                          child: Text(
+                            "BACK",
+                            style:
+                                TextStyle(color: Colors.white30, fontSize: 24),
                           ),
                         ),
                       ),
-                      Container(
-                        height: 300,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Center(
-                              child: Container(
-                                width: 300,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: TextFormField(
-                                    decoration: InputDecoration(
-                                      enabledBorder: UnderlineInputBorder(
-                                        borderSide: BorderSide(
-                                          color: Colors.white.withAlpha(240),
-                                          width: 2,
-                                        ),
-                                      ),
-                                      labelText: 'Email',
-                                      labelStyle: TextStyle(
-                                          color: Colors.white, fontSize: 22),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Center(
-                              child: Container(
-                                width: 300,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: TextFormField(
-                                    obscureText: true,
-                                    decoration: InputDecoration(
-                                      fillColor: Colors.transparent,
-                                      enabledBorder: UnderlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: Colors.white, width: 2),
-                                      ),
-                                      labelText: 'Password',
-                                      labelStyle:
-                                          TextStyle(color: Colors.white),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
+                    ),
+                    InkWell(
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => UIMovieMain(),
+                        ));
+                        print("okey good");
+                      },
+                      splashColor: Colors.red.shade300,
+                      child: Ink(
+                        width: MediaQuery.of(context).size.width / 2,
+                        height: 50,
+                        color: Colors.red,
+                        child: const Center(
+                          child: Text(
+                            "SUBMIT",
+                            style: TextStyle(color: Colors.white, fontSize: 24),
+                          ),
                         ),
                       ),
-                      // Container(
-                      //     width: double.infinity,
-                      //     height: size.height - 120,
-                      //     child: GoLogin()),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
   }
 }
 
-class GoLogin extends StatelessWidget {
-  const GoLogin({
+class InputDesigns extends StatelessWidget {
+  const InputDesigns({
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
-    return Row(
-      children: [
-        GestureDetector(
-          onTap: () {
-            Navigator.of(context).pop();
-          },
-          child: Expanded(
-            flex: 1,
-            child: Container(
-              width: size.width / 2,
-              height: 80,
-              child: Center(
-                child: Icon(Icons.arrow_back_ios),
+    return SizedBox(
+      height: 200,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          Center(
+            child: SizedBox(
+              width: 300,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextFormField(
+                  decoration: InputDecoration(
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Colors.white.withAlpha(240),
+                        width: 2,
+                      ),
+                    ),
+                    labelText: 'Email',
+                    labelStyle:
+                        const TextStyle(color: Colors.white, fontSize: 22),
+                  ),
+                ),
               ),
-              color: Color.fromARGB(255, 255, 255, 255),
             ),
           ),
-        ),
-        Expanded(
-          flex: 1,
-          child: Container(
-            width: size.width / 2,
-            height: 80,
-            child: Center(
-                child: Text(
-              "Submit",
-              style: TextStyle(
-                color: Colors.white.withAlpha(200),
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
+          Center(
+            child: SizedBox(
+              width: 300,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextFormField(
+                  obscureText: true,
+                  decoration: const InputDecoration(
+                    fillColor: Colors.transparent,
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white, width: 2),
+                    ),
+                    labelText: 'Password',
+                    labelStyle: TextStyle(color: Colors.white),
+                  ),
+                ),
               ),
-            )),
-            color: Color.fromARGB(255, 236, 45, 45),
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

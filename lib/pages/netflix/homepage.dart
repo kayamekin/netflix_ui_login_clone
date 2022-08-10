@@ -32,7 +32,7 @@ class _NetflixHomePageState extends State<NetflixHomePage> {
   Stack BackgroundAndLogoStyle() {
     return Stack(
       children: [
-        Container(
+        SizedBox(
           width: size.height - 80,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -42,10 +42,10 @@ class _NetflixHomePageState extends State<NetflixHomePage> {
                   Expanded(
                     child: Container(
                       height: size.height,
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         image: DecorationImage(
                           image: AssetImage(
-                            'assets/image/backgroundimage.jpg',
+                            'assets/images/backgroundimage.jpg',
                           ),
                           fit: BoxFit.cover,
                         ),
@@ -61,8 +61,8 @@ class _NetflixHomePageState extends State<NetflixHomePage> {
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
                         colors: [
-                          Color(0xff030303).withOpacity(0.85),
-                          Color(0xff030303).withOpacity(0)
+                          const Color(0xff030303).withOpacity(0.85),
+                          const Color(0xff030303).withOpacity(0)
                         ],
                         end: Alignment.topCenter,
                         begin: Alignment.bottomCenter,
@@ -76,12 +76,12 @@ class _NetflixHomePageState extends State<NetflixHomePage> {
         ),
         Column(
           children: [
-            SizedBox(
+            const SizedBox(
               height: 250,
             ),
             Center(
               child: Image.asset(
-                'assets/image/netflix_logo.png',
+                'assets/images/netflix_logo.png',
                 fit: BoxFit.cover,
                 width: size.width / 3 * 2,
               ),
@@ -95,60 +95,46 @@ class _NetflixHomePageState extends State<NetflixHomePage> {
   Column LoginPageRouteButton(BuildContext context) {
     return Column(
       children: [
-        SizedBox(height: 400),
+        const SizedBox(height: 400),
         Center(
           child: GestureDetector(
             onTap: () {
               setState(() {
                 Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => LoginPageNetflix()));
+                    builder: (context) => const LoginPageNetflix()));
               });
             },
             child: Stack(children: [
-              // Container(
-              //   height: 150,
-              //   width: size.width / 3 * 2,
-              //   decoration: BoxDecoration(
-              //       color: Colors.red.shade500,
-              //       boxShadow: [
-              //         BoxShadow(
-              //           color: Colors.red.withAlpha(40),
-              //           offset: Offset(0, 32),
-              //           blurRadius: 32.0,
-              //           spreadRadius: 32,
-              //         ),
-              //       ],
-              //       borderRadius: BorderRadius.only(
-              //         bottomRight: Radius.circular(10),
-              //         bottomLeft: Radius.circular(10),
-              //       )),
-              // ),
-              Container(
-                width: size.width / 3 * 2,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(10),
-                    bottomRight: Radius.circular(10),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(20),
+                child: Container(
+                  width: size.width / 3 * 2,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        Colors.black.withAlpha(0),
+                        Colors.black.withAlpha(250),
+                      ],
+                      tileMode: TileMode.mirror,
+                      begin: Alignment(0, 1),
+                      end: Alignment.bottomLeft,
+                    ),
                   ),
-                  gradient: LinearGradient(colors: [
-                    Colors.black.withAlpha(200),
-                    Colors.white.withAlpha(0),
-                  ], end: Alignment.topRight, begin: Alignment.bottomLeft),
+                  height: 150,
                 ),
-                height: 150,
               ),
-              Container(
+              SizedBox(
                 height: 120,
                 width: size.width / 3 * 2,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Text(
+                    const Text(
                       "Go to Login",
                       style: TextStyle(color: Colors.white, fontSize: 32),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     Text(
@@ -156,7 +142,7 @@ class _NetflixHomePageState extends State<NetflixHomePage> {
                       style: TextStyle(
                           color: Colors.white.withAlpha(180), fontSize: 20),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 15,
                     ),
                   ],
