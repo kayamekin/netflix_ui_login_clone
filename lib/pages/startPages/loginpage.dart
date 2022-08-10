@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_3/pages/netflix/netflixmainpage.dart';
+import 'package:flutter_application_3/pages/startPages/netflixmainpage.dart';
 import 'package:video_player/video_player.dart';
 import 'package:chewie/chewie.dart';
 

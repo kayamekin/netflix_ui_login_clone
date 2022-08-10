@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_3/pages/netflix/loginpage.dart';
+import 'package:flutter_application_3/pages/startPages/loginpage.dart';
 
 class NetflixHomePage extends StatefulWidget {
   const NetflixHomePage({Key? key}) : super(key: key);
@@ -127,23 +127,17 @@ class _NetflixHomePageState extends State<NetflixHomePage> {
                 height: 120,
                 width: size.width / 3 * 2,
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     const Text(
                       "Go to Login",
                       style: TextStyle(color: Colors.white, fontSize: 32),
                     ),
-                    const SizedBox(
-                      height: 10,
-                    ),
                     Text(
                       "Touch Me",
                       style: TextStyle(
                           color: Colors.white.withAlpha(180), fontSize: 20),
-                    ),
-                    const SizedBox(
-                      height: 15,
                     ),
                   ],
                 ),

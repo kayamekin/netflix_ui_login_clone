@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_3/pages/netflix/homepage.dart';
-import 'package:flutter_application_3/pages/netflix/netflixmainpage.dart';
+import 'package:flutter_application_3/pages/startPages/netflixmainpage.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,7 +17,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const NetflixHomePage(),
+      home: const UIMovieMain(),
     );
   }
 }
