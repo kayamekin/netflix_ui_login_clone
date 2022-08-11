@@ -77,7 +77,7 @@ class _LoginPageNetflixState extends State<LoginPageNetflix> {
               ),
             ),
             Positioned(
-              top: 600,
+              bottom: 0,
               width: MediaQuery.of(context).size.width,
               child: Material(
                 color: Colors.white.withOpacity(0.0),
