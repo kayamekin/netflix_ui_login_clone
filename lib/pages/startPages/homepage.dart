@@ -1,7 +1,7 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_application_3/pages/startPages/loginpage.dart';
-import 'package:iconify_flutter/iconify_flutter.dart';
-import 'package:iconify_flutter/icons/bi.dart';
+import 'package:flutter_application_3/pages/startPages/netflixmainpage.dart';
 
 class NetflixHomePage extends StatefulWidget {
   const NetflixHomePage({Key? key}) : super(key: key);
@@ -10,196 +10,106 @@ class NetflixHomePage extends StatefulWidget {
   State<NetflixHomePage> createState() => _NetflixHomePageState();
 }
 
-class _NetflixHomePageState extends State<NetflixHomePage> {
-  late var size = MediaQuery.of(context).size;
+class _NetflixHomePageState extends State<NetflixHomePage>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _animationController;
+
+  TextEditingController userInputController = TextEditingController();
+
+  bool selected = false;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _animationController =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 300));
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _animationController.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
-      backgroundColor: Colors.black,
-      body: SafeArea(
-        child: SingleChildScrollView(
-            child: Expanded(
-          child: Stack(
-            children: [
-              BackgroundAndLogoStyle(),
-              Positioned(
-                top: 400,
-                left: MediaQuery.of(context).size.width / 7,
-                child: SizedBox(
-                  width: 300,
-                  height: 100,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(20),
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        shadowColor: Colors.white30,
-                        primary: Colors.red.withAlpha(120),
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Text(
-                            "HADİ BAŞLA",
-                            style: TextStyle(fontSize: 24),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Iconify(
-                                Bi.film,
-                                color: Colors.white30,
-                              ),
-                              Iconify(
-                                Bi.file_medical,
-                                color: Colors.white30,
-                              ),
-                              Iconify(
-                                Bi.activity,
-                                color: Colors.white30,
-                              ),
-                              Iconify(
-                                Bi.filetype_m4p,
-                                color: Colors.white30,
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => const LoginPageNetflix()));
-                        });
-                      },
-                    ),
-                  ),
-                ),
-              )
-            ],
-          ),
-        )),
-      ),
+      body: Stack(children: [
+        Containers(size: size),
+      ]),
     );
   }
+}
 
-  Stack BackgroundAndLogoStyle() {
-    return Stack(
-      children: [
-        SizedBox(
-          width: size.height - 80,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Stack(
-                children: [
-                  Expanded(
-                    child: Container(
-                      height: size.height,
-                      decoration: const BoxDecoration(
-                        image: DecorationImage(
-                          image: AssetImage(
-                            'assets/images/backgroundimage.jpg',
-                          ),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Container(
-                    height: size.height,
-                    color: Colors.black.withAlpha(120),
-                  ),
-                  Container(
-                    height: size.height,
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [
-                          const Color(0xff030303).withOpacity(0.85),
-                          const Color(0xff030303).withOpacity(0)
-                        ],
-                        end: Alignment.topCenter,
-                        begin: Alignment.bottomCenter,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
+class Containers extends StatelessWidget {
+  const Containers({
+    Key? key,
+    required this.size,
+  }) : super(key: key);
+
+  final Size size;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: size.width,
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage('assets/images/netflixwall.jpg'),
+          fit: BoxFit.cover,
         ),
-        Column(
+      ),
+      child: TweenAnimationBuilders(size: size),
+    );
+  }
+}
+
+class TweenAnimationBuilders extends StatelessWidget {
+  const TweenAnimationBuilders({
+    Key? key,
+    required this.size,
+  }) : super(key: key);
+
+  final Size size;
+
+  @override
+  Widget build(BuildContext context) {
+    return TweenAnimationBuilder(
+        tween: Tween<double>(begin: 0, end: 1),
+        curve: Curves.bounceIn,
+        duration: Duration(seconds: 4),
+        builder: (BuildContext context, double val, child) {
+          return Opacity(
+            opacity: val,
+            child: child,
+          );
+        },
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            const SizedBox(
-              height: 250,
-            ),
             Center(
               child: Image.asset(
                 'assets/images/netflix_logo.png',
-                fit: BoxFit.cover,
-                width: size.width / 3 * 2,
+                width: size.width * 0.50,
+              ),
+            ),
+            SizedBox(
+              width: size.width * 0.50,
+              height: size.height * 0.10,
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, '/loginpage');
+                },
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.red,
+                  textStyle: const TextStyle(fontSize: 24),
+                ),
+                child: const Text("Başla"),
               ),
             ),
           ],
-        ),
-      ],
-    );
-  }
-
-  Column LoginPageRouteButton(BuildContext context) {
-    return Column(
-      children: [
-        const SizedBox(height: 400),
-        Center(
-          child: GestureDetector(
-            onTap: () {
-              setState(() {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => const LoginPageNetflix()));
-              });
-            },
-            child: Stack(children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(20),
-                child: Container(
-                  width: size.width / 3 * 2,
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [
-                        Colors.black.withAlpha(0),
-                        Colors.black.withAlpha(250),
-                      ],
-                      tileMode: TileMode.mirror,
-                      begin: Alignment(0, 1),
-                      end: Alignment.bottomLeft,
-                    ),
-                  ),
-                  height: 150,
-                ),
-              ),
-              SizedBox(
-                height: 120,
-                width: size.width / 3 * 2,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    const Text(
-                      "Go to Login",
-                      style: TextStyle(color: Colors.white, fontSize: 32),
-                    ),
-                    Text(
-                      "Touch Me",
-                      style: TextStyle(
-                          color: Colors.white.withAlpha(180), fontSize: 20),
-                    ),
-                  ],
-                ),
-              ),
-            ]),
-          ),
-        ),
-      ],
-    );
+        ));
   }
 }
