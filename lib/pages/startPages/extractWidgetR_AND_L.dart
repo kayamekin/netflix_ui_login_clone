@@ -92,7 +92,7 @@ class EmailWidget extends StatelessWidget {
   }
 }
 
-class PasswordWidget extends StatelessWidget {
+class PasswordWidget extends StatefulWidget {
   const PasswordWidget({
     Key? key,
     required TextEditingController passwordController,
@@ -102,13 +102,19 @@ class PasswordWidget extends StatelessWidget {
   final TextEditingController _passwordController;
 
   @override
+  State<PasswordWidget> createState() => _PasswordWidgetState();
+}
+
+class _PasswordWidgetState extends State<PasswordWidget> {
+  bool passwordSelected = false;
+  @override
   Widget build(BuildContext context) {
     var passText = 'Password';
     return TextFormField(
-      controller: _passwordController,
+      controller: widget._passwordController,
       textInputAction: TextInputAction.next,
       keyboardType: TextInputType.visiblePassword,
-      obscureText: !RegisterPageNetflix.passwordSelected,
+      obscureText: !passwordSelected,
       cursorColor: Colors.red,
       style: TextStyle(color: Colors.white),
       decoration: InputDecoration(
@@ -129,29 +135,23 @@ class PasswordWidget extends StatelessWidget {
         suffixIcon: IconButton(
           onPressed: () {
             setState(() {
-              RegisterPageNetflix.passwordSelected =
-                  !RegisterPageNetflix.passwordSelected;
+              passwordSelected = !passwordSelected;
             });
           },
-          icon: ShowHidePassword(),
+          icon: Icon(
+            passwordSelected
+                ? Icons.remove_red_eye
+                : Icons.remove_red_eye_outlined,
+            color: Colors.white,
+          ),
         ),
       ),
     );
   }
-
-  void setState(Null Function() param0) {}
 }
 
-//
-
-//
-
-// --------------------------------------------------------------------------------
-//
-//  REGİSTER PAGE
-// --------------------
-//
-class FormWidgetRegister extends StatelessWidget {
+// --------------------------------------------------------------
+class FormWidgetRegister extends StatefulWidget {
   const FormWidgetRegister({
     Key? key,
     required this.size,
@@ -171,9 +171,14 @@ class FormWidgetRegister extends StatelessWidget {
   final TextEditingController _passwordRepeatController;
 
   @override
+  State<FormWidgetRegister> createState() => _FormWidgetRegisterState();
+}
+
+class _FormWidgetRegisterState extends State<FormWidgetRegister> {
+  @override
   Widget build(BuildContext context) {
     return Form(
-      key: formKey,
+      key: widget.formKey,
       autovalidateMode: AutovalidateMode.always,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -181,27 +186,26 @@ class FormWidgetRegister extends StatelessWidget {
         children: [
           UserNameWidget(),
           SizedBox(
-            height: size.height * 0.01,
+            height: widget.size.height * 0.01,
           ),
-          EmailWidget(emailController: _emailController),
+          EmailWidget(emailController: widget._emailController),
           SizedBox(
-            height: size.height * 0.01,
+            height: widget.size.height * 0.01,
           ),
           PasswordRegisterWidget(
-              passwordRegisterController: _passwordRegisterController),
+              passwordRegisterController: widget._passwordRegisterController),
           SizedBox(
-            height: size.height * 0.01,
+            height: widget.size.height * 0.01,
           ),
           PasswordRepeatRegisterWidget(
-              passwordRepeatController: _passwordRepeatController),
+              passwordRepeatController: widget._passwordRepeatController),
         ],
       ),
     );
   }
 }
-// ---------------------------------------------
 
-class PasswordRegisterWidget extends StatelessWidget {
+class PasswordRegisterWidget extends StatefulWidget {
   const PasswordRegisterWidget({
     Key? key,
     required TextEditingController passwordRegisterController,
@@ -211,13 +215,20 @@ class PasswordRegisterWidget extends StatelessWidget {
   final TextEditingController _passwordRegisterController;
 
   @override
+  State<PasswordRegisterWidget> createState() => _PasswordRegisterWidgetState();
+}
+
+class _PasswordRegisterWidgetState extends State<PasswordRegisterWidget> {
+  bool passwordSelected = true;
+
+  @override
   Widget build(BuildContext context) {
     var passText = 'Parola';
     return TextFormField(
-      controller: _passwordRegisterController,
+      controller: widget._passwordRegisterController,
       textInputAction: TextInputAction.next,
       keyboardType: TextInputType.visiblePassword,
-      obscureText: !RegisterPageNetflix.passwordSelected,
+      obscureText: !passwordSelected,
       cursorColor: Colors.red,
       style: TextStyle(color: Colors.white),
       decoration: InputDecoration(
@@ -238,20 +249,22 @@ class PasswordRegisterWidget extends StatelessWidget {
         suffixIcon: IconButton(
           onPressed: () {
             setState(() {
-              RegisterPageNetflix.passwordSelected =
-                  !RegisterPageNetflix.passwordSelected;
+              passwordSelected = !passwordSelected;
             });
           },
-          icon: ShowHidePassword(),
+          icon: Icon(
+            passwordSelected
+                ? Icons.remove_red_eye
+                : Icons.remove_red_eye_outlined,
+            color: Colors.white,
+          ),
         ),
       ),
     );
   }
-
-  void setState(Null Function() param0) {}
 }
 
-class PasswordRepeatRegisterWidget extends StatelessWidget {
+class PasswordRepeatRegisterWidget extends StatefulWidget {
   const PasswordRepeatRegisterWidget({
     Key? key,
     required TextEditingController passwordRepeatController,
@@ -261,13 +274,21 @@ class PasswordRepeatRegisterWidget extends StatelessWidget {
   final TextEditingController _passwordRepeatController;
 
   @override
+  State<PasswordRepeatRegisterWidget> createState() =>
+      _PasswordRepeatRegisterWidgetState();
+}
+
+class _PasswordRepeatRegisterWidgetState
+    extends State<PasswordRepeatRegisterWidget> {
+  bool passwordSelected = true;
+  @override
   Widget build(BuildContext context) {
     var passText = 'Parola tekrar';
     return TextFormField(
-      controller: _passwordRepeatController,
+      controller: widget._passwordRepeatController,
       textInputAction: TextInputAction.next,
       keyboardType: TextInputType.visiblePassword,
-      obscureText: !RegisterPageNetflix.passwordSelected,
+      obscureText: passwordSelected,
       cursorColor: Colors.red,
       style: TextStyle(color: Colors.white),
       decoration: InputDecoration(
@@ -288,17 +309,19 @@ class PasswordRepeatRegisterWidget extends StatelessWidget {
         suffixIcon: IconButton(
           onPressed: () {
             setState(() {
-              RegisterPageNetflix.passwordSelected =
-                  !RegisterPageNetflix.passwordSelected;
+              passwordSelected = !passwordSelected;
             });
           },
-          icon: ShowHidePassword(),
+          icon: Icon(
+            passwordSelected
+                ? Icons.remove_red_eye
+                : Icons.remove_red_eye_outlined,
+            color: Colors.white,
+          ),
         ),
       ),
     );
   }
-
-  void setState(Null Function() param0) {}
 }
 
 class EmailRegisterWidget extends StatelessWidget {
@@ -351,26 +374,6 @@ class EmailRegisterWidget extends StatelessWidget {
             ? notEmail
             : successfulEmail;
       },
-    );
-  }
-}
-
-// ----------------------------------------
-// show hide
-// ----------------------------------------
-
-class ShowHidePassword extends StatelessWidget {
-  const ShowHidePassword({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Icon(
-      RegisterPageNetflix.passwordSelected
-          ? Icons.remove_red_eye
-          : Icons.remove_red_eye_outlined,
-      color: Colors.white,
     );
   }
 }

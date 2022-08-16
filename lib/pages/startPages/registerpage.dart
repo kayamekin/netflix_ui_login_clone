@@ -7,7 +7,6 @@ import 'package:chewie/chewie.dart';
 class RegisterPageNetflix extends StatefulWidget {
   const RegisterPageNetflix({Key? key}) : super(key: key);
   static String routeRegister = "/registerpage";
-  static bool passwordSelected = true;
 
   @override
   State<RegisterPageNetflix> createState() => _RegisterPageNetflixState();
