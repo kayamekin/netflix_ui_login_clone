@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_3/pages/startPages/homepage.dart';
 import 'package:flutter_application_3/pages/startPages/loginpage.dart';
 import 'package:flutter_application_3/pages/startPages/netflixmainpage.dart';
+import 'package:flutter_application_3/pages/startPages/registerpage.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,15 +15,17 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Netflix UI Clone',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
       home: const NetflixHomePage(),
       routes: {
-        '/loginpage': (context) => const LoginPageNetflix(),
-        '/netflixmainpage': (context) => const UIMovieMain(),
+        LoginPageNetflix.routeLogin: (context) => const LoginPageNetflix(),
+        RegisterPageNetflix.routeRegister: (context) =>
+            const RegisterPageNetflix(),
+        UIMovieMain.routeMovieMain: (context) => const UIMovieMain(),
       },
     );
   }

@@ -1,10 +1,14 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_application_3/pages/startPages/netflixmainpage.dart';
+import 'package:flutter_application_3/pages/startPages/loginpage.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 
 class NetflixHomePage extends StatefulWidget {
   const NetflixHomePage({Key? key}) : super(key: key);
+  static String routeHome = '/';
+  static String centerWelcomeText =
+      "Keyif alarak izleyeceğiniz en kapsamlı film , dizi arşivi olan Netflix'in Dünyasına Hoşgeldiniz";
 
   @override
   State<NetflixHomePage> createState() => _NetflixHomePageState();
@@ -20,7 +24,6 @@ class _NetflixHomePageState extends State<NetflixHomePage>
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _animationController =
         AnimationController(vsync: this, duration: Duration(milliseconds: 300));
@@ -53,16 +56,7 @@ class Containers extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: size.width,
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage('assets/images/netflixwall.jpg'),
-          fit: BoxFit.cover,
-        ),
-      ),
-      child: TweenAnimationBuilders(size: size),
-    );
+    return TweenAnimationBuilders(size: size);
   }
 }
 
@@ -86,30 +80,86 @@ class TweenAnimationBuilders extends StatelessWidget {
             child: child,
           );
         },
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            Center(
-              child: Image.asset(
-                'assets/images/netflix_logo.png',
-                width: size.width * 0.50,
-              ),
+        child: Stack(children: [
+          imageBackground,
+          appIntroStartDesign(context),
+        ]));
+  }
+
+  Column appIntroStartDesign(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [
+        Expanded(
+          flex: 2,
+          child: Center(
+            child: imagesLogo,
+          ),
+        ),
+        SizedBox(
+          width: size.width / 3 * 2,
+          child: AutoSizeText(
+            NetflixHomePage.centerWelcomeText,
+            style: TextStyle(
+              fontSize: 48,
+              color: Colors.white.withAlpha(200),
+              fontWeight: FontWeight.bold,
             ),
-            SizedBox(
+            maxLines: 4,
+          ),
+        ),
+        Expanded(
+          child: Divider(
+            color: Colors.red.shade200,
+            height: 4,
+            indent: size.width / 6,
+            endIndent: size.width / 6,
+            thickness: 2,
+          ),
+        ),
+        Expanded(
+          child: FittedBox(
+            fit: BoxFit.scaleDown,
+            child: SizedBox(
               width: size.width * 0.50,
               height: size.height * 0.10,
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, '/loginpage');
-                },
-                style: ElevatedButton.styleFrom(
-                  primary: Colors.red,
-                  textStyle: const TextStyle(fontSize: 24),
-                ),
-                child: const Text("Başla"),
-              ),
+              child: goButton(context),
             ),
-          ],
-        ));
+          ),
+        ),
+      ],
+    );
+  }
+
+  Container get imageBackground {
+    return Container(
+      width: size.width,
+      decoration: const BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage('assets/images/netflixwall.jpg'),
+          fit: BoxFit.cover,
+        ),
+      ),
+    );
+  }
+
+  ElevatedButton goButton(BuildContext context) {
+    return ElevatedButton(
+      onPressed: () {
+        Navigator.pushReplacementNamed(context, LoginPageNetflix.routeLogin);
+      },
+      style: ElevatedButton.styleFrom(
+        primary: Colors.red,
+        textStyle: const TextStyle(fontSize: 24),
+      ),
+      child: const Text("Başla"),
+    );
+  }
+
+  Image get imagesLogo {
+    return Image.asset(
+      'assets/images/netflix_logo.png',
+      width: size.width * 0.50,
+    );
   }
 }

@@ -1,5 +1,6 @@
 import 'dart:math';
-
+import 'dart:io' show Platform, exit;
+import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_3/constant.dart';
 import 'package:flutter_application_3/profilepage/profile.dart';
@@ -8,6 +9,7 @@ import 'package:iconify_flutter/icons/icon_park_outline.dart';
 
 class UIMovieMain extends StatefulWidget {
   const UIMovieMain({Key? key}) : super(key: key);
+  static String routeMovieMain = "/netflixmainpage";
 
   @override
   State<UIMovieMain> createState() => _UIMovieMainState();
@@ -15,12 +17,7 @@ class UIMovieMain extends StatefulWidget {
 
 class _UIMovieMainState extends State<UIMovieMain> {
   int currentIndex = 0;
-
-  void tiklama(int clickIndex) {
-    setState(() {
-      currentIndex = clickIndex;
-    });
-  }
+  final GlobalKey<NavigatorState> navigatorKey = GlobalKey();
 
   List<Widget> itemsDataImage = [];
   List<dynamic> categories = [
@@ -62,6 +59,12 @@ class _UIMovieMainState extends State<UIMovieMain> {
     imageData();
   }
 
+  void tiklama(int clickIndex) {
+    setState(() {
+      currentIndex = clickIndex;
+    });
+  }
+
   double _generateDouble2(double minValue, double maxValue, int precision) {
     final random = new Random();
     final doubleRandom = minValue + (maxValue - minValue) * random.nextDouble();
@@ -70,87 +73,119 @@ class _UIMovieMainState extends State<UIMovieMain> {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: Colors.black,
-        appBar: appBarMethod(context),
-        body: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Stack(children: [
-                Container(
-                  width: size.width,
-                  height: size.height / 3 * 2,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage('assets/images/banner.webp'),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
-                Container(
-                  width: size.width,
-                  height: size.height / 3 * 2,
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [
-                        Colors.black.withAlpha(0),
-                        Colors.black.withAlpha(50),
-                        Colors.black.withAlpha(100),
-                        Colors.black.withAlpha(200),
-                        Colors.black,
-                      ],
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                    ),
-                  ),
-                ),
-                Positioned(
-                    top: size.height / 3,
-                    child: Container(
-                      color: Colors.black.withAlpha(100),
-                      width: MediaQuery.of(context).size.width,
-                      height: 200,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Image.asset(
-                            'assets/images/title_img.webp',
-                            fit: BoxFit.cover,
-                            width: 300,
-                          ),
-                          SizedBox(
-                            width: 250,
-                            height: 50,
-                            child: ElevatedButton(
-                                onPressed: () {},
-                                child: Text(
-                                  "HEMEN İZLE",
-                                  style: TextStyle(fontSize: 24),
-                                ),
-                                style: ElevatedButton.styleFrom(
-                                  primary: Colors.white.withAlpha(70),
-                                )),
-                          ),
-                        ],
-                      ),
-                    )),
-              ]),
-              viewMovieSelect(),
-              categoriesMovie(),
-            ],
+    Size size = MediaQuery.of(context).size;
+    return WillPopScope(
+      onWillPop: () async {
+        final shouldPop = await showMyDialog();
+        return shouldPop ?? false;
+      },
+      child: SafeArea(
+        child: Scaffold(
+          backgroundColor: Colors.black,
+          appBar: appBarMethod(context),
+          body: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                bannerMain(size, context),
+                categoriesMovie,
+                viewMovieSelect
+              ],
+            ),
           ),
+          bottomNavigationBar: bottomBarUI(),
         ),
-        bottomNavigationBar: bottomBarUI(),
       ),
     );
   }
 
-  Container categoriesMovie() {
+  Future<bool?> showMyDialog() => showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+            title: Text("Uygulamadan çıkmak istediğine emin misin"),
+            actions: [
+              TextButton(
+                child: Text("Çık"),
+                onPressed: () {
+                  if (Platform.isAndroid) {
+                    SystemNavigator.pop();
+                  } else if (Platform.isIOS) {
+                    exit(0);
+                  }
+                },
+              ),
+              TextButton(
+                child: Text("Başa Dön"),
+                onPressed: () => Navigator.pushNamed(context, '/'),
+              ),
+            ],
+          ));
+
+  Stack bannerMain(Size size, BuildContext context) {
+    return Stack(children: [
+      Container(
+        width: size.width,
+        height: size.height / 3 * 2,
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/images/banner.webp'),
+            fit: BoxFit.cover,
+          ),
+        ),
+      ),
+      Container(
+        width: size.width,
+        height: size.height / 3 * 2,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Colors.black.withAlpha(0),
+              Colors.black.withAlpha(50),
+              Colors.black.withAlpha(100),
+              Colors.black.withAlpha(200),
+              Colors.black,
+            ],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
+      ),
+      Positioned(
+          top: size.height / 3,
+          child: Container(
+            color: Colors.black.withAlpha(100),
+            width: MediaQuery.of(context).size.width,
+            height: 200,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Image.asset(
+                  'assets/images/title_img.webp',
+                  fit: BoxFit.cover,
+                  width: 300,
+                ),
+                SizedBox(
+                  width: 250,
+                  height: 50,
+                  child: ElevatedButton(
+                      onPressed: () {},
+                      child: Text(
+                        "HEMEN İZLE",
+                        style: TextStyle(fontSize: 24),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.white.withAlpha(70),
+                      )),
+                ),
+              ],
+            ),
+          )),
+    ]);
+  }
+
+  Container get categoriesMovie {
     // ignore: sized_box_for_whitespace
     return Container(
       height: 100,
@@ -161,10 +196,10 @@ class _UIMovieMainState extends State<UIMovieMain> {
           physics: const ClampingScrollPhysics(),
           itemCount: categories.length,
           itemBuilder: (context, index) {
+            var size = MediaQuery.of(context).size;
             return Container(
               padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
               margin: const EdgeInsets.all(20),
-              height: 30,
               decoration: BoxDecoration(
                 border: Border.all(
                     color: Colors.white, style: BorderStyle.solid, width: 2),
@@ -182,131 +217,38 @@ class _UIMovieMainState extends State<UIMovieMain> {
     );
   }
 
-  Container viewMovieSelect() {
+  Container get viewMovieSelect {
+    Size size = MediaQuery.of(context).size;
     return Container(
-      height: 300,
+      height: size.height / 2,
       margin: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-      child: Expanded(
-          child: ListView.builder(
-              physics: const BouncingScrollPhysics(),
-              shrinkWrap: true,
-              scrollDirection: Axis.horizontal,
-              itemCount: itemsDataImage.length,
-              itemBuilder: (context, index) {
-                var rng = Random();
-                for (var i = 0; i < 10; i++) {
-                  // ignore: avoid_print
-                  print(rng.nextInt(100));
-                }
-                ;
-                return Stack(
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.all(20),
-                      width: 150,
-                      child: itemsDataImage[index],
-                    ),
-                    Container(
-                      margin: const EdgeInsets.all(20),
-                      width: 150,
-                      height: 300,
-                      decoration: const BoxDecoration(
-                          gradient: LinearGradient(
-                              colors: [
-                            Colors.black12,
-                            Colors.black,
-                          ],
-                              begin: Alignment.topCenter,
-                              end: Alignment.bottomCenter)),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Container(
-                            width: 200,
-                            height: 100,
-                            color: Colors.black.withAlpha(140),
-                            child: Center(
-                              child: Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceAround,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: const [
-                                      Text(
-                                        "Göster",
-                                        style: TextStyle(
-                                          fontSize: 24,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                      Icon(
-                                        Icons.remove_red_eye,
-                                        size: 24,
-                                        color: Colors.white24,
-                                      ),
-                                    ],
-                                  ),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceAround,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      const Text(
-                                        "Imdb",
-                                        style: TextStyle(
-                                          fontSize: 18,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                      Container(
-                                        child: Text(
-                                          ((rng.nextDouble() * 4.9) + 5)
-                                              .toStringAsFixed(1),
-                                          style: const TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 16),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceAround,
-                                    children: const [
-                                      Icon(
-                                        Icons.star_rounded,
-                                        color: Colors.yellow,
-                                      ),
-                                      Icon(
-                                        Icons.star_rounded,
-                                        color: Colors.yellow,
-                                      ),
-                                      Icon(
-                                        Icons.star_rounded,
-                                        color: Colors.yellow,
-                                      ),
-                                      Icon(
-                                        Icons.star_half_rounded,
-                                        color: Colors.yellow,
-                                      ),
-                                    ],
-                                  )
-                                ],
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                    )
-                  ],
-                );
-              })),
+      child: ListView.builder(
+        physics: const BouncingScrollPhysics(),
+        shrinkWrap: true,
+        scrollDirection: Axis.horizontal,
+        itemCount: itemsDataImage.length,
+        itemBuilder: (context, index) {
+          Size size = MediaQuery.of(context).size;
+          return Container(
+            width: size.width * 0.50,
+            margin: EdgeInsets.all(20),
+            decoration: BoxDecoration(color: Colors.red.withAlpha(100)),
+            child: Stack(
+              children: [
+                itemsDataImage[index],
+                Container(
+                  decoration: const BoxDecoration(
+                    gradient: LinearGradient(colors: [
+                      Colors.black12,
+                      Colors.black,
+                    ], begin: Alignment.topCenter, end: Alignment.bottomCenter),
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+      ),
     );
   }
 
